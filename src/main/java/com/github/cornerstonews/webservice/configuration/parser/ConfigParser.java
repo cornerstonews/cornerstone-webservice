@@ -26,7 +26,7 @@ public interface ConfigParser<T> {
     /**
      * Loads, parses, binds, and validates a configuration object from a file.
      *
-     * @param file the path of the configuration file
+     * @param path the path of the configuration file
      * @return a validated configuration object
      * @throws IOException            if there is an error reading the file
      * @throws ConfigException if there is an error parsing or validating the file
@@ -38,7 +38,7 @@ public interface ConfigParser<T> {
     /**
      * Loads, parses, binds, and validates a configuration object from a file.
      *
-     * @param file the path of the configuration file
+     * @param path the path of the configuration file
      * @return a validated configuration object
      * @throws IOException            if there is an error reading the file
      * @throws ConfigException if there is an error parsing or validating the file
