@@ -51,13 +51,12 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.codahale.metrics.jersey2.InstrumentedResourceMethodApplicationListener;
+import com.github.cornerstonews.configuration.ConfigException;
+import com.github.cornerstonews.configuration.ConfigFactory;
 import com.github.cornerstonews.webservice.authorization.AdminRoleFilter;
 import com.github.cornerstonews.webservice.configuration.BaseWebserviceConfig;
-import com.github.cornerstonews.webservice.configuration.ConfigException;
 import com.github.cornerstonews.webservice.configuration.injection.Config;
 import com.github.cornerstonews.webservice.configuration.injection.ConfigInjectionResolver;
-import com.github.cornerstonews.webservice.configuration.parser.ConfigFactory;
-import com.github.cornerstonews.webservice.configuration.parser.ConfigParser;
 import com.github.cornerstonews.webservice.exception.mapper.JavaLangErrorMapper;
 import com.github.cornerstonews.webservice.exception.mapper.NotAcceptableExceptionMapper;
 import com.github.cornerstonews.webservice.exception.mapper.NotModifiedExceptionMapper;
@@ -89,8 +88,7 @@ public abstract class WebserviceApplication<T extends BaseWebserviceConfig> exte
     
     public final void initialize() {
         try {
-            
-            this.loadConfig();
+            this.loadConfig(getConfigPath());
             if(this.configuration.isRegisterDefaults()) {
                 registerDefaults();
             }
@@ -119,20 +117,9 @@ public abstract class WebserviceApplication<T extends BaseWebserviceConfig> exte
         return this.configuration;
     }
 
-    private final T loadConfig() throws IOException, ConfigException {
-        return this.loadConfig(getConfigPath());
-    }
-
     public final T loadConfig(String path) throws ConfigException, IOException {
-        ConfigParser<T> configurationParser = ConfigFactory.getParser(path, this.getConfigurationClass());
-        return this.loadConfig(path, configurationParser);
-    }
-
-    private final T loadConfig(String path, ConfigParser<T> configurationParser) throws IOException, ConfigException {
         if (this.configuration == null) {
-            
-            this.configuration = (path == null) ? configurationParser.build() : configurationParser.build(path);
-
+            this.configuration = ConfigFactory.loadConfig(path, this.getConfigurationClass());
             register(new AbstractBinder() {
                 @Override
                 protected void configure() {
