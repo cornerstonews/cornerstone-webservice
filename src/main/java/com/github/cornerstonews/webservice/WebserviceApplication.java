@@ -54,6 +54,7 @@ import com.codahale.metrics.jersey2.InstrumentedResourceMethodApplicationListene
 import com.github.cornerstonews.configuration.ConfigException;
 import com.github.cornerstonews.configuration.ConfigFactory;
 import com.github.cornerstonews.webservice.authorization.AdminRoleFilter;
+import com.github.cornerstonews.webservice.authorization.DefaultAuthenticationFilter;
 import com.github.cornerstonews.webservice.configuration.BaseWebserviceConfig;
 import com.github.cornerstonews.webservice.configuration.injection.Config;
 import com.github.cornerstonews.webservice.configuration.injection.ConfigInjectionResolver;
@@ -156,7 +157,9 @@ public abstract class WebserviceApplication<T extends BaseWebserviceConfig> exte
             register(getCORSFilter());
         }
 
-        if (this.configuration.isRegisterRolesAllowedDynamicFeature()) {
+        if (this.configuration.isEnableAuthenticationAndRoles()) {
+            log.debug("Registering DefaultAuthenticationFilter.class");
+            register(DefaultAuthenticationFilter.class);
             log.debug("Registering RolesAllowedDynamicFeature.class");
             register(RolesAllowedDynamicFeature.class);
         }
