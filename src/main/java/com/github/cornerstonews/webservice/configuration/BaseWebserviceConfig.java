@@ -58,7 +58,7 @@ public class BaseWebserviceConfig {
 
     @Valid
     @NotNull
-    private boolean registerRolesAllowedDynamicFeature = true;
+    private boolean enableAuthenticationAndRoles = true;
 
     @Valid
     @NotNull
@@ -216,12 +216,12 @@ public class BaseWebserviceConfig {
         this.registerServerProperties = registerServerProperties;
     }
 
-    public boolean isRegisterRolesAllowedDynamicFeature() {
-        return registerRolesAllowedDynamicFeature;
+    public boolean isEnableAuthenticationAndRoles() {
+        return enableAuthenticationAndRoles;
     }
 
-    public void setRegisterRolesAllowedDynamicFeature(boolean registerRolesAllowedDynamicFeature) {
-        this.registerRolesAllowedDynamicFeature = registerRolesAllowedDynamicFeature;
+    public void setEnableAuthenticationAndRoles(boolean enableAuthenticationAndRoles) {
+        this.enableAuthenticationAndRoles = enableAuthenticationAndRoles;
     }
 
     public String getRateUnit() {

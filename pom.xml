@@ -10,7 +10,7 @@
     <parent>
         <groupId>com.github.cornerstonews</groupId>
         <artifactId>cornerstone-project</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
         <relativePath>../cornerstone-project/pom.xml</relativePath>
     </parent>
 
@@ -18,7 +18,7 @@
         <connection>scm:git:git@github.com:cornerstonews/cornerstone-webservice.git</connection>
         <developerConnection>scm:git:git@github.com:cornerstonews/cornerstone-webservice.git</developerConnection>
         <url>https://github.com/cornerstonews/cornerstone-webservice</url>
-        <tag>cornerstone-webservice-1.0.0</tag>
+        <tag>cornerstone-webservice-1.1.0</tag>
     </scm>
 
     <properties>
@@ -26,6 +26,12 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.github.cornerstonews</groupId>
+            <artifactId>cornerstone-config</artifactId>
+            <version>1.1.0</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet</artifactId>
@@ -46,14 +52,9 @@
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-yaml</artifactId>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
         </dependency>
 
         <dependency>
@@ -72,6 +73,10 @@
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-jvm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-jmx</artifactId>
         </dependency>
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
