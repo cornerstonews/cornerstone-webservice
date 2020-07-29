@@ -72,7 +72,7 @@ import com.github.cornerstonews.webservice.util.ClassFinder;
 import com.github.cornerstonews.webservice.util.Generics;
 
 public abstract class WebserviceApplication<T extends BaseWebserviceConfig> extends ResourceConfig {
-    
+
     private static final Logger log = LogManager.getLogger(WebserviceApplication.class);
 
     protected T configuration;
@@ -80,17 +80,17 @@ public abstract class WebserviceApplication<T extends BaseWebserviceConfig> exte
     private MetricsRegistryFeature metricsRegistryFeature;
     private boolean metricsAreRegistered;
     private HealthCheckRegistry healthCheckRegistry;
-    
+
     public WebserviceApplication(String applicationName) {
         super();
         setApplicationName(applicationName);
         initialize();
     }
-    
+
     public final void initialize() {
         try {
             this.loadConfig(getConfigPath());
-            if(this.configuration.isRegisterDefaults()) {
+            if (this.configuration.isRegisterDefaults()) {
                 registerDefaults();
             }
             initializeJersey();
@@ -109,11 +109,11 @@ public abstract class WebserviceApplication<T extends BaseWebserviceConfig> exte
     public String getConfigPath() throws ConfigException {
         return ConfigFactory.getConfigPath();
     }
-    
+
     private Class<T> getConfigurationClass() {
         return Generics.getTypeParameter(getClass(), BaseWebserviceConfig.class);
     }
-    
+
     public T getWebserviceConfiguration() {
         return this.configuration;
     }
@@ -121,22 +121,29 @@ public abstract class WebserviceApplication<T extends BaseWebserviceConfig> exte
     public final T loadConfig(String path) throws ConfigException, IOException {
         if (this.configuration == null) {
             this.configuration = ConfigFactory.loadConfig(path, this.getConfigurationClass());
+            ConfigFactory.isValid(this.configuration);
+            registerConfig();
+        }
+        return this.configuration;
+    }
+
+    protected void registerConfig() {
+        if (this.configuration == null) {
             register(new AbstractBinder() {
                 @Override
                 protected void configure() {
                     bind(configuration).to(BaseWebserviceConfig.class);
                     bind(configuration).to(getConfigurationClass());
-                    
+
 //                    // Below will use factory to provide configuration instance but bind above provides the same
 //                    BaseWebserviceConfigFactory factory = new BaseWebserviceConfigFactory(configuration);
 //                    bindFactory(factory).to(BaseWebserviceConfig.class);
 //                    bindFactory(factory).to(getConfigurationClass());
-                    
+
                     bind(ConfigInjectionResolver.class).to(new TypeLiteral<InjectionResolver<Config>>(){}).in(Singleton.class);
                 }
             });
         }
-        return this.configuration;
     }
 
     private final void registerDefaults() {
@@ -149,10 +156,10 @@ public abstract class WebserviceApplication<T extends BaseWebserviceConfig> exte
 
         register(MultiPartFeature.class);
 
-        if(this.configuration.isRegisterCSRFFilter()) {
+        if (this.configuration.isRegisterCSRFFilter()) {
             register(new CsrfProtectionFilter());
         }
-        
+
         if (this.configuration.isRegisterCORSFilter()) {
             register(getCORSFilter());
         }
@@ -167,7 +174,7 @@ public abstract class WebserviceApplication<T extends BaseWebserviceConfig> exte
         if (this.configuration.isRegisterServerProperties()) {
             getServerProperties().entrySet().forEach(p -> property(p.getKey(), p.getValue()));
         }
-        
+
         // Register Exception Mappers
         register(JavaLangErrorMapper.class);
         register(NotAcceptableExceptionMapper.class);
@@ -177,32 +184,32 @@ public abstract class WebserviceApplication<T extends BaseWebserviceConfig> exte
         register(WsErrorMessageBodyWriter.class);
         register(WsThrowableMapper.class);
         findAndRegisterMappers();
-        
+
         // Register resources
         register(LoggerResource.class);
         register(AdminRoleFilter.class);
-        
+
     }
 
-	private void findAndRegisterMappers() {
-		try {
-			ClassFinder classFinder = new ClassFinder(ExceptionMapper.class, "com.github.cornerstonews");
-			classFinder.getClasses().forEach(c -> {
-				if(c.isAnnotationPresent(Provider.class)) {
-					log.debug("Registering exception mapper: {}", c.getName());
-					register(c);
-				}
-			});
-		} catch (IOException e) {
-			log.error("Exception thrown while finding and registering exception mapper. Exception: ", e);
-		}
-	}
-    
+    private void findAndRegisterMappers() {
+        try {
+            ClassFinder classFinder = new ClassFinder(ExceptionMapper.class, "com.github.cornerstonews");
+            classFinder.getClasses().forEach(c -> {
+                if (c.isAnnotationPresent(Provider.class)) {
+                    log.debug("Registering exception mapper: {}", c.getName());
+                    register(c);
+                }
+            });
+        } catch (IOException e) {
+            log.error("Exception thrown while finding and registering exception mapper. Exception: ", e);
+        }
+    }
+
     private void registerMetrics(MetricsRegistryFeature metricsRegistryFeature) {
         if (metricsAreRegistered) {
             return;
         }
-        
+
         this.metricsRegistryFeature = metricsRegistryFeature;
         register(new InstrumentedResourceMethodApplicationListener(metricsRegistryFeature.getMetricRegistry()));
         register(new AbstractBinder() {
@@ -213,10 +220,10 @@ public abstract class WebserviceApplication<T extends BaseWebserviceConfig> exte
         });
 
         register(MetricsResource.class);
-        
+
         metricsAreRegistered = true;
     }
-    
+
     private void registerHealthCheckRegistry() {
         this.healthCheckRegistry = new HealthCheckRegistry();
         register(new AbstractBinder() {
@@ -269,32 +276,31 @@ public abstract class WebserviceApplication<T extends BaseWebserviceConfig> exte
     public HealthCheckRegistry getHealthchecks() {
         return healthCheckRegistry;
     }
-    
+
     private class WebserviceApplicationEventListener implements ApplicationEventListener {
         private final Logger log2 = LogManager.getLogger(WebserviceApplicationEventListener.class);
 
         private final String newline = String.format("%n");
-        
+
         private volatile int requestCnt = 0;
         private Meter[] responses;
-        private Timer connectionTimer;    
+        private Timer connectionTimer;
         private Counter activeRequests;
         private MetricRegistry metricRegistry;
 
         public WebserviceApplicationEventListener(MetricRegistry metricRegistry) {
             this.metricRegistry = metricRegistry;
-            
+
             this.connectionTimer = this.metricRegistry.timer(MetricRegistry.name(WebserviceRequestEventListener.class, "connections"));
             this.activeRequests = this.metricRegistry.counter(MetricRegistry.name(WebserviceRequestEventListener.class, "active-requests"));
-            this.responses = new Meter[]{
-                    this.metricRegistry.meter(MetricRegistry.name(WebserviceRequestEventListener.class, "1xx-responses")), // 1xx
+            this.responses = new Meter[] { this.metricRegistry.meter(MetricRegistry.name(WebserviceRequestEventListener.class, "1xx-responses")), // 1xx
                     this.metricRegistry.meter(MetricRegistry.name(WebserviceRequestEventListener.class, "2xx-responses")), // 2xx
                     this.metricRegistry.meter(MetricRegistry.name(WebserviceRequestEventListener.class, "3xx-responses")), // 3xx
                     this.metricRegistry.meter(MetricRegistry.name(WebserviceRequestEventListener.class, "4xx-responses")), // 4xx
-                    this.metricRegistry.meter(MetricRegistry.name(WebserviceRequestEventListener.class, "5xx-responses"))  // 5xx
+                    this.metricRegistry.meter(MetricRegistry.name(WebserviceRequestEventListener.class, "5xx-responses")) // 5xx
             };
         }
-        
+
         @Override
         public void onEvent(ApplicationEvent event) {
 
@@ -307,17 +313,17 @@ public abstract class WebserviceApplication<T extends BaseWebserviceConfig> exte
 
                 // Do something, i.e. initialize application
                 initApp();
-                
+
                 log2.info("{} web service is ready.", appName);
                 break;
 
             case DESTROY_FINISHED:
                 log2.info("{} web service shutdown called.", appName);
-                
+
                 // Do something, i.e. shutdown application
                 destroyApp();
                 destroyDefaults();
-                
+
                 log2.info("{} web service destroyed.", appName);
                 break;
 
@@ -337,32 +343,32 @@ public abstract class WebserviceApplication<T extends BaseWebserviceConfig> exte
                 break;
             }
         }
-        
+
         private void logComponents(Set<Class<?>> classes, Set<Resource> allResources) {
             final Set<String> resources = new HashSet<>();
             final StringBuilder resourcesSB = new StringBuilder();
             resourcesSB.append(newline).append("The following resource classes were found:").append(newline).append(newline);
-            
-            final Set<String> providers = new HashSet<>(); 
+
+            final Set<String> providers = new HashSet<>();
             final StringBuilder providersSB = new StringBuilder();
             providersSB.append("The following provider classes were found:").append(newline).append(newline);
-            
+
             final Set<Class<?>> allResourcesClasses = new HashSet<>();
-            
+
             classes.forEach(c -> {
-                if(c.isAnnotationPresent((Class<? extends Annotation>) Path.class)) {
+                if (c.isAnnotationPresent((Class<? extends Annotation>) Path.class)) {
                     resources.add(c.getCanonicalName());
                     resourcesSB.append("    - ").append(c.getCanonicalName()).append(newline);
-                } else if(c.isAnnotationPresent((Class<? extends Annotation>) Provider.class)) {
+                } else if (c.isAnnotationPresent((Class<? extends Annotation>) Provider.class)) {
                     providers.add(c.getCanonicalName());
                     providersSB.append("    - ").append(c.getCanonicalName()).append(newline);
                 }
-                
+
                 if (!c.isInterface() && Resource.from(c) != null) {
                     allResourcesClasses.add(c);
                 }
             });
-            
+
             log2.info(resourcesSB.toString());
             log2.info(providersSB.toString());
             log2.info(new WebserviceEnpointLogger().getEndpointsInfo(allResourcesClasses, allResources));

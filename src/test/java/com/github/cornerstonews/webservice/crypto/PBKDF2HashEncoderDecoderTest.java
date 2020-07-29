@@ -24,8 +24,6 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.github.cornerstonews.webservice.crypto.PBKDF2HashEncoderDecoder;
-
 public class PBKDF2HashEncoderDecoderTest {
 
     private final static Logger log = LogManager.getLogger(PBKDF2HashEncoderDecoderTest.class);

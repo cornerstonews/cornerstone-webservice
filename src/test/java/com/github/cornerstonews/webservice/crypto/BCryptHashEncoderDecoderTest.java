@@ -22,8 +22,6 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.github.cornerstonews.webservice.crypto.BCryptHashEncoderDecoder;
-
 public class BCryptHashEncoderDecoderTest {
 
     private final static Logger log = LogManager.getLogger(BCryptHashEncoderDecoderTest.class);

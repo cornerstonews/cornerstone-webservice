@@ -30,7 +30,7 @@ public class JsonConstraintViolation<T> implements ConstraintViolation<T> {
     @SuppressWarnings("unchecked")
     public JsonConstraintViolation(T rootBean, String message, String path, String invalidValue) {
         violation = ConstraintViolationImpl.forParameterValidation(null, null, null, message, (Class<T>) rootBean.getClass(), rootBean, null, invalidValue, 
-                PathImpl.createPathFromString(path), null, null, null, null);
+                PathImpl.createPathFromString(path), null, null, null);
     }
 
     @Override
