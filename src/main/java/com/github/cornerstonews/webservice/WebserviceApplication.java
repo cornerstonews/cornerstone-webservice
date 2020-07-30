@@ -118,7 +118,7 @@ public abstract class WebserviceApplication<T extends BaseWebserviceConfig> exte
         return this.configuration;
     }
 
-    public final T loadConfig(String path) throws ConfigException, IOException {
+    public T loadConfig(String path) throws ConfigException, IOException {
         if (this.configuration == null) {
             this.configuration = ConfigFactory.loadConfig(path, this.getConfigurationClass());
             ConfigFactory.isValid(this.configuration);
