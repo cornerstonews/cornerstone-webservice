@@ -110,7 +110,7 @@ public abstract class WebserviceApplication<T extends BaseWebserviceConfig> exte
         return ConfigFactory.getConfigPath();
     }
 
-    private Class<T> getConfigurationClass() {
+    protected Class<T> getConfigurationClass() {
         return Generics.getTypeParameter(getClass(), BaseWebserviceConfig.class);
     }
 
@@ -128,7 +128,7 @@ public abstract class WebserviceApplication<T extends BaseWebserviceConfig> exte
     }
 
     protected void registerConfig() {
-        if (this.configuration == null) {
+        if (this.configuration != null) {
             register(new AbstractBinder() {
                 @Override
                 protected void configure() {
