@@ -64,6 +64,7 @@ public class DefaultAuthenticationFilter implements ContainerRequestFilter {
         // or class has permit all annotation but then method must not have roles allowed
         if (resourceMethod.isAnnotationPresent(PermitAll.class)
                 || (!resourceMethod.isAnnotationPresent(RolesAllowed.class) && resourceClass.isAnnotationPresent(PermitAll.class))) {
+        	log.debug("'{}' resouce is annotated with permit all at method or class level, so skipping authentication.", resourceMethod);
             return true;
         }
 
