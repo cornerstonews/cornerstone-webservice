@@ -240,7 +240,7 @@ public abstract class PagedDataObject<T> {
                 this.endPage = this.totalPages;
             } else {
                 this.startPage = this.currentPage - (pagesToDisplay / 2);
-                this.endPage = this.startPage + (DEFAULT_PAGE_SIZE - 1);
+                this.endPage = this.startPage + (pagesToDisplay - 1);
             }
         }
 
