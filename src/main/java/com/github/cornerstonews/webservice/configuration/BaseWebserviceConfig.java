@@ -48,8 +48,6 @@ public class BaseWebserviceConfig {
     @NotNull
     private boolean registerCSRFFilter = false;
     
-    @Valid
-    @NotNull(message="must not be null. jwtToken.secretKey must be defined.")
     private JWTToken jwtToken;
     
     @Valid
