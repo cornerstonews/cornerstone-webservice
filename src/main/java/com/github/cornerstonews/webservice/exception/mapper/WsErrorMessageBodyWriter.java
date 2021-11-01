@@ -59,7 +59,7 @@ public class WsErrorMessageBodyWriter implements MessageBodyWriter<WsError> {
             JAXBContext jaxbContext = JAXBContextFactory.createContext(new Class[] { type }, null);
             Marshaller marshaller = jaxbContext.createMarshaller();
 
-            if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType)
+            if (MediaType.APPLICATION_JSON_TYPE.equals(mediaType) || mediaType.isCompatible(MediaType.APPLICATION_JSON_TYPE)
                     || (!MediaType.APPLICATION_XML_TYPE.equals(mediaType) && !MediaType.TEXT_PLAIN_TYPE.equals(mediaType))) {
                 marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
                 marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, MediaType.APPLICATION_JSON);

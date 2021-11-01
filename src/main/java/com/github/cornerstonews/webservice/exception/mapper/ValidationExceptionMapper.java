@@ -35,7 +35,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.glassfish.jersey.server.validation.ValidationError;
+import org.glassfish.jersey.server.validation.ValidationErrorData;
 import org.glassfish.jersey.server.validation.internal.LocalizationMessages;
 import org.glassfish.jersey.server.validation.internal.ValidationHelper;
 
@@ -62,14 +62,14 @@ public class ValidationExceptionMapper implements ExceptionMapper<ValidationExce
             final Response.ResponseBuilder response = Response.status(ValidationHelper.getResponseStatus(cve));
             response.type(getMediaType());            
             
-            List<ValidationError> errors = new ArrayList<>(ValidationHelper.constraintViolationToValidationErrors(cve).size());
-            for(ValidationError error : ValidationHelper.constraintViolationToValidationErrors(cve)) {
+            List<ValidationErrorData> errors = new ArrayList<>(ValidationHelper.constraintViolationToValidationErrors(cve).size());
+            for(ValidationErrorData error : ValidationHelper.constraintViolationToValidationErrors(cve)) {
                 error.setMessageTemplate(null);
                 error.setPath(error.getPath().substring(error.getPath().lastIndexOf('.') + 1, error.getPath().length()));
                 errors.add(error);
             }
             
-            response.entity(new GenericEntity<>(errors,new GenericType<List<ValidationError>>() {}.getType()));
+            response.entity(new GenericEntity<>(errors,new GenericType<List<ValidationErrorData>>() {}.getType()));
             return response.build();
         } else if (exception instanceof InputValidationException) {
             log.debug(LocalizationMessages.VALIDATION_EXCEPTION_RAISED(), exception);

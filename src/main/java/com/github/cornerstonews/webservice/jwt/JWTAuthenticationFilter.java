@@ -42,7 +42,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 
 @Provider
 //@PreMatching
-@Priority(Priorities.AUTHENTICATION)
+@Priority(Priorities.AUTHENTICATION + 500)
 public class JWTAuthenticationFilter extends DefaultAuthenticationFilter {
 
     private static final Logger log = LogManager.getLogger(JWTAuthenticationFilter.class);

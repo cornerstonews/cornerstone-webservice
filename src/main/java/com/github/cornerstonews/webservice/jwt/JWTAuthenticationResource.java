@@ -60,7 +60,7 @@ public abstract class JWTAuthenticationResource {
         return authenticateUser(username, password);
     }
 
-    private Response authenticateUser(@FormParam("username") String username, @FormParam("password") String password) {
+    protected Response authenticateUser(@FormParam("username") String username, @FormParam("password") String password) {
         try {
             JWTPrincipal jwtPrincipal = authenticator.authenticate(username, password);
 
