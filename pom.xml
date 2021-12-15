@@ -10,7 +10,7 @@
     <parent>
         <groupId>com.github.cornerstonews</groupId>
         <artifactId>cornerstone-project</artifactId>
-        <version>1.3.0</version>
+        <version>1.3.2</version>
         <relativePath>../cornerstone-project/pom.xml</relativePath>
     </parent>
 
@@ -18,7 +18,7 @@
         <connection>scm:git:git@github.com:cornerstonews/cornerstone-webservice.git</connection>
         <developerConnection>scm:git:git@github.com:cornerstonews/cornerstone-webservice.git</developerConnection>
         <url>https://github.com/cornerstonews/cornerstone-webservice</url>
-      <tag>cornerstone-webservice-1.3.0</tag>
+      <tag>cornerstone-webservice-1.3.2</tag>
   </scm>
 
     <properties>
@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.github.cornerstonews</groupId>
             <artifactId>cornerstone-config</artifactId>
-            <version>1.3.0</version>
+            <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
