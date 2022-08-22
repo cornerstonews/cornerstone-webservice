@@ -19,7 +19,7 @@
         <developerConnection>scm:git:git@github.com:cornerstonews/cornerstone-webservice.git</developerConnection>
         <url>https://github.com/cornerstonews/cornerstone-webservice</url>
         <tag>HEAD</tag>
-  </scm>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -59,7 +59,15 @@
 
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
+            <artifactId>jjwt-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
         </dependency>
         <dependency>
             <groupId>org.mindrot</groupId>
@@ -112,4 +120,3 @@
     </dependencies>
 
 </project>
-
