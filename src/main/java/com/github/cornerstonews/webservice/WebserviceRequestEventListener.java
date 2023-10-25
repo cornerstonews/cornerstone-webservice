@@ -56,8 +56,8 @@ public class WebserviceRequestEventListener implements RequestEventListener {
         switch (event.getType()) {
             case RESOURCE_METHOD_START:
                 ExtendedUriInfo uriInfo = event.getUriInfo();
-                log.info("Received request: {} {}", uriInfo.getMatchedResourceMethod().getHttpMethod(), uriInfo.getRequestUri());
-                log.debug("Starting request #{}. Request: {} {}", requestNumber, uriInfo.getMatchedResourceMethod().getHttpMethod(), uriInfo.getRequestUri());
+                log.info("Received a new request. Method: {}, Request Number: {}", uriInfo.getMatchedResourceMethod().getHttpMethod(), requestNumber);
+                log.trace("Starting request #{}. Request: {} {}", requestNumber, uriInfo.getMatchedResourceMethod().getHttpMethod(), uriInfo.getRequestUri());
                 break;
             case FINISHED:
                 context.stop();
