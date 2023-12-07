@@ -4,7 +4,7 @@
 
     <artifactId>cornerstone-webservice</artifactId>
     <packaging>jar</packaging>
-    <version>1.4.1-SNAPSHOT</version>
+    <version>1.4.1</version>
     <name>cornerstone-webservice</name>
     <description>Library to build Webservice project based on Jersey REST Framework</description>
 
@@ -19,7 +19,7 @@
         <connection>scm:git:git@github.com:cornerstonews/cornerstone-webservice.git</connection>
         <developerConnection>scm:git:git@github.com:cornerstonews/cornerstone-webservice.git</developerConnection>
         <url>https://github.com/cornerstonews/cornerstone-webservice</url>
-        <tag>cornerstone-webservice-1.4.0</tag>
+        <tag>cornerstone-webservice-1.4.1</tag>
     </scm>
 
     <properties>
